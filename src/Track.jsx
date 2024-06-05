@@ -1,56 +1,47 @@
-import React, {createContext} from 'react';
+import React, {useCallback} from 'react';
 
 const TrackTitleContext = createContext();
 const TrackArtistContext = createContext();
 const TrackAlbumContext = createContext();
 
 
-function Track(){
+function Track(props){
+
+    const addTrack = useCallback((event) => {
+        props.onAdd(props.track);
+    }, [props.onAdd, props.track]);
+
+    const removeTrack = useCallback((event) => {
+        props.onRemove(props.track);
+    }, [props.onRemove, props.track]);
+
+    function changeToPlaylist(){
+        if (props.isRemoval){
+            return(
+                <button onClick={removeTrack}>-</button>
+            )
+        }else{
+            return(
+                <button onClick={addTrack}>+</button>
+            )
+        }
+    
+    };
+    
 
     return(
         <div className="Track">
-            {/* Using useContext to avoid prop drilling */}
-
-            <TrackTitleContext.Provider value ={TrackTitle}>
-                <p> `Track title is ${TrackTitle}</p><br/>
-            </TrackTitleContext.Provider>
-
-            <TrackArtistContext.Provider value ={TrackArtist}>
-                <p> `Track title is ${TrackArtist}</p><br/>
-            </TrackArtistContext.Provider>
-
-            <TrackAlbumContext.Provider value ={TrackAlbum}>
-                <p> `Track title is ${TrackAlbum}</p><br/>
-            </TrackAlbumContext.Provider>
-
-
-
+            <div className="Track info">
+                <h2>{props.track.name}</h2>
+                <p>{props.track.artist} | {props.track.album}</p>
+            </div>
+            {changeToPlaylist()}
         </div>
-    )
-
-
-}
+    );
+};
 
 export default Track;
 
 
-function changeToPlaylist(){
-    if (props.isRemoval){
-        return(
-            <button onClick={removeTrack}>-</button>
-        )
-    }else{
-        return(
-            <button onClick={addTrack}>+</button>
-        )
-    }
 
-}
 
-function addTrack(){
-    props.addition(props.track);
-}
-
-function removeTrack(){
-    props.removal(props.track);
-}

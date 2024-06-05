@@ -1,32 +1,25 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Track from './Track.jsx';
 
-function Tracklist(){
-
-    const TrackTitle = useContext(TrackTitleContext);
-    const TrackArtist = useContext(TrackArtistContext);
-    const TrackAlbum = useContext(TrackAlbumContext);
-
+function Tracklist(props){
 
     return(
         <div className="Tracklist">
             {props.tracks.map((track) => {
                 return(
-                    <>
                         <Track 
-                            value={track}
+                            track={track}
                             key={track.id}
-                            
-
+                            onAdd={props.onAdd}
+                            onRemove={props.onRemove}
+                            isRemoval={props.isRemoval}
                         />
-                    </>
-                )
+                );
             })}
 
         </div>
-    )
-
-}
+    );
+};
 
 export default Tracklist;
 
